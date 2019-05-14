@@ -1,21 +1,14 @@
-\chapter{Discussion}
-In this chapter, we discuss the results of this thesis. 
-Of course, we must cite a book on matrices~\cite{Horn_2012} and a book on probability~\cite{Feller}. 
-Note that citations appear in alphabetical order. 
+\chapter{Conclusions}\label{chap:Conclusions}
 
-\section{A section} 
-\lipsum[1-2]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%  section: Conclusion
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+This paper has introduced a novel approach for finding correspondences between shapes in 3D.
+This approach is based on a simple observation:
+Statistical properties the nearest-neighbor field from the source surface to the target provide robust information about the correspondence.
+In particular, we use the diversity of the nearest-neighbor field and the consistency of the internal distances within the surface of corresponding points. 
+Two additional ideas of our approach are the use of small sub-surfaces when computing the similarity (rather than using the whole surface) and utilizing a multi-scale approach.
 
-\section{Another section}
-\lipsum[10-14]
-
-
-
-
-
-
-
-
-
-
-
+Our approach improves the state-of-the-art results both quantitatively and qualitatively on the challenging benchmarks of SHREC'16.
+In particular, these benchmarks contain examples having large deformations, symmetries, partiality of the shapes, and topological noise.
+We have demonstrated that our method is robust to the scale of partiality, as well as to its own parameters.

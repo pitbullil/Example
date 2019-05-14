@@ -1,68 +1,52 @@
-\chapter{A Chapter}\label{chap_first}
+\chapter{Related work}\label{chap:related work}
 
-\section{First Section}
-This section has a theorem with its proof. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Matching Of Deformable Surfaces
+\paragraph{Correspondence of deformable shapes in 3D}
+The problem of finding shape correspondences between deformable objects in 3D has been studied extensively.
+Most methods attempt to minimize some distortion criteria, which falls into one of three categories:
+(1)~local shape similarity, commonly computed as the distance between corresponding point descriptors~\cite{aubry2011wave,bronstein2010scale,jain2007non,rusu2008learning,rusu2009fast,Sun:2009:CPI:1735603.1735621,tombari2010unique,dey2010persistent}, 
+(2)~pairwise relations~\cite{chen2015robust,coifman2005geometric,vestner2017product}, or
+(3)~a combination of both~\cite{vestner2017efficient}.
 
-\begin{theorem}\label{thm:earth}
-    The Earth is round.
-\end{theorem}
+%Partial Matching Of Deformable Surfaces
+The underlying assumption of most of these methods is that the shapes are either approximately isometric or that they are topologically homeomorphic.
+This assumption usually do not hold in the case of partial correspondence and topological noise.
 
-\begin{IEEEproof}
-    Trivial.
-\end{IEEEproof}
+A variety of approaches have been proposed to handle topological differences.
+In~\cite{ovsjanikov2008global}, resilience to topological shortcuts in the context of intrinsic
+symmetry detection of deformable shapes is studied.
+Wang et al.~\cite{wang2011discrete} considered the metrics induced by commute-time kernels as a more robust alternative to geodesic distance.
+In~\cite{rodola2013elastic,Torsello:2012:GAD:2354409.2354702} sparse relaxations to this framework were introduced.
+A different kernel was proposed by~\cite{boscaini2014coulomb} and bilateral maps were suggested by~\cite{vanKaick:2013:BMP:2771539.2771553}.
+Chen and Koltun~\cite{chen2015robust} reformulated the isometric embedding problem with a robust norm accounting for topological artifacts.
+Boscaini et al.~\cite{Boscaini2016AnisotropicDD} proposed a CNN-based shape descriptor to address the problem.
+Litani et al.~\cite{litany2017fully} modified the functional mapping of~\cite{Ovsjanikov:2012:FMF:2185520.2185526} to better handle topological noise.
+Vestner et al.~\cite{vestner2017efficient} formulated the problem as a quadratic assignment problem that incorporates matching of both point-wise and pair-wise descriptors.
 
-It also has a corollary.
+Partial correspondence was first tackled, assuming that the shapes are rigid~\cite{Aiger:2008:CSR:1360612.1360684,albarelli2015fast,itskovich2011surface}.
+In the non-rigid case, the notion of  minimum distortion correspondence was utilized~\cite{bronstein2009partial,rodola2013elastic,Torsello:2012:GAD:2354409.2354702}.
+A voting-based method was proposed by~\cite{sahilliouglu2014multiple}, to match shape extremities.
+Other works include the alignment of tangent spaces~\cite{Brunton:2014:LRR:2592295.2592390} and the design of robust descriptors for partial matching~\cite{vanKaick:2013:BMP:2771539.2771553}.
+In the context of collections of shapes, partial correspondence has been considered in~\cite{cosmo2017consistent,huang2014functional}.
+Masci et al.~\cite{Masci:2015:GCN:2919341.2920992} introduced a deep learning framework for computing a dense correspondence between deformable shapes.
+\cite{boscaini2016learning}~improved upon this by introducing anisotropic convolution kernels.
+In~\cite{rodola2017partial,litany2017fully} the notion of functional maps~\cite{Ovsjanikov:2012:FMF:2185520.2185526} was adapted to the partial matching scenario.
 
-\begin{corollary}
-    The Earth is not flat.
-\end{corollary}
+The method introduced in this paper addresses both partial matching and topological noise.
+We present a novel similarity measure that inherently differs from the above methods.
+Instead of relying explicitly on distances between descriptors, our similarity measure is based on statistics of simple properties of the nearest neighbor field between the points of the two given surfaces.
 
-\begin{IEEEproof}
-    Follows from \Cref{thm:earth}.
-\end{IEEEproof}
-Note the use of the cleveref package here. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% section: 2D Shape Matching
+\paragraph{Correspondence of deformable shapes in images}
+% copy from Roey
+In images, partial matching is often termed {\em template matching}.
+Numerous papers have attempted to solve the problem; a good review is given in~\cite{ouyang2012performance}.
+The commonly-used methods are pixel-wise~\cite{chen2003fast,hel2014matching}.
+Geometric transformations have also been addressed~\cite{tian2012globally,tsai2002rotation}.
+Another group of methods considers a global probabilistic property of the template~\cite{comaniciu2000real,oron2015locally}.
+Recently, machine learning based techniques have also been used~\cite{aberman2018neural}.
 
-We also cite an article~\cite{Blackwell1951} and another article \cite{knuth_notation}. 
-
-\section{Second Section}
-Lemmas are useful, too. 
-
-\begin{lemma}\label{lem:roses}
-    Roses are red. 
-\end{lemma}
-
-\begin{IEEEproof}
-    Violets are blue.
-\end{IEEEproof}
-
-Sometimes, we need an example.
-
-\begin{example}
-    \Cref{tab:roses} demonstrates \Cref{lem:roses}. 
-	\begin{table}[t]
-			\centering
-            \caption[Short caption]{Long caption (now it is)} \label{tab:roses}
-	\begin{tabular}{cc}
-        \toprule  color & flower \\  \midrule
-        red    & rose \\ 
-        blue   & violet \\
-        yellow & daisy \\  \bottomrule
-	\end{tabular} 	
-	\end{table}		
-\end{example}    
-
-\lipsum[1-5]
-
-
-% Making sure appendices are aptly named
-\namedsubappendices
-\begin{subappendices}
-
-\section{First appendix}
-An appendix. 
-
-\section{Second appendix}
-And another. 
-
- \end{subappendices}
-
+Our work is inspired by the methods of~\cite{dekel2015best,talmi2017template}, which also look at various statistics of the nearest-neighbor field of the correspondence.
+In particular, in~\cite{dekel2015best} it is proposed to simply count points which are mutually nearest neighbors of each other.
+In~\cite{talmi2017template} it is suggested to rely mostly on a subset of matches---on points that have distinct nearest neighbors.
+We adopt this general approach, but use other criteria, which are more suitable to surfaces in 3D that are orderless and lack constant density.

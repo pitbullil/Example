@@ -1,30 +1,30 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{technionThesisSetup}[2019/1/31 Setup for Technion thesis]
+\ProvidesPackage{technionThesisSetup}[2019/5/12 Setup for Technion thesis]
 % Written by Boaz Shuval. 
 % This is part of a template for writing a thesis according to the Technion specifications. 
 % Version: 1.0
 
 % Enter the thesis submit date: {dd}{mm}{yyyy}
 % This computes the Hebrew date, as well (taking into account leap years, etc.)
-\ThesisSubmitDate{30}{1}{2019}
+\ThesisSubmitDate{12}{5}{2019}
 
 % Your details: 
-\renewcommand{\AuthorEnglish}{Author Name}
-\renewcommand{\AdvisorEnglish}{Advisor Name}
-\renewcommand{\AdvisorTitleEnglish}{Professor}
-\renewcommand{\TitleEnglish}{Thesis Title}
-\renewcommand{\DegreeEnglish}{Doctor of Philosophy} % OR: Master of Science
-\renewcommand{\FacultyEnglish}{My Faculty}
+\renewcommand{\AuthorEnglish}{Nadav Yehonatan Arbel}
+\renewcommand{\AdvisorEnglish}{Ayellet Tal & Lihi Zelnik-Manor}
+\renewcommand{\AdvisorTitleEnglish}{Professors}
+\renewcommand{\TitleEnglish}{Partial Correspondence of 3D Shapes using Properties of the Nearest-Neighbor Field}
+\renewcommand{\DegreeEnglish}{Master of Science in Electrical Engineering} % OR: Master of Science
+\renewcommand{\FacultyEnglish}{Electrical Engineering}
 \renewcommand{\FinancialEnglish}{The generous financial help of the Technion is gratefully acknowledged.}
 
 
 % Your details in Hebrew:
-\renewcommand{\AuthorHebrew}{שם המחבר}
-\renewcommand{\AdvisorHebrew}{שם המנחה}
+\renewcommand{\AuthorHebrew}{נדב יהונתן ארבל}
+\renewcommand{\AdvisorHebrew}{איילת טל וליהי צלניק מנור}
 \renewcommand{\AdvisorTitleHebrew}{פרופסור}
-\renewcommand{\TitleHebrew}{כותרת התיזה}
-\renewcommand{\DegreeHebrew}{דוקטור לפילוסופיה} % OR: מגיסטר למדעים
-\renewcommand{\FacultyHebrew}{הפקולטה שלי}
+\renewcommand{\TitleHebrew}{התאמה חלקית בין צורות תלת מימדיות על ידי שימוש בתכונות שדה השכן הקרוב ביותר}
+\renewcommand{\DegreeHebrew}{מגיסטר למדעים בהנדסת חשמל} % OR: מגיסטר למדעים
+\renewcommand{\FacultyHebrew}{הנדסת חשמל}
 \renewcommand{\FinancialHebrew}{אני מודה לטכניון על התמיכה הכספית הנדיבה בהשתלמותי.}
 
 
@@ -32,41 +32,11 @@
 
 % Change the following according to your list of publications
 \renewcommand{\PubListEnglish}{%
-    \begin{itemize}
-        \item Publication 1.  \\ 
-            \Cref{chap_first} is based on this paper.  
-        \item Publication 2.  \\ 
-            \Cref{chap_second} is based on this paper.  
-        % \item Publication 3.  \\ 
-        %     \Cref{chap_third} is based on this paper.  
-        % \item Publication 4.  \\ 
-        %     \Cref{chap_fourth} is based on this paper.  
-\end{itemize}}
+}
 
 \renewcommand{\PubListHebrew}{%
 \begin{english}
-    \begin{itemize}
-        \item First publication.
-            \vspace{-1em}
-             \begin{flushright}
-                 \texthebrew{פרק \ref{chap_first} מבוסס על מאמר זה.} 
-            \end{flushright}
-        \item Second publication.
-            \vspace{-1em}
-             \begin{flushright}
-                 \texthebrew{פרק \ref{chap_second} מבוסס על מאמר זה.} 
-            \end{flushright}
-        % \item Third publication.
-        %     \vspace{-1em}
-        %      \begin{flushright}
-        %          \texthebrew{פרק \ref{chap_third} מבוסס על מאמר זה.} 
-        %     \end{flushright}
-        % \item Fourth publication.
-        %     \vspace{-1em}
-        %      \begin{flushright}
-        %          \texthebrew{פרק \ref{chap_fourth} מבוסס על מאמר זה.} 
-        %     \end{flushright}
-    \end{itemize}
+    
 \end{english}}
 
 % If, for some reason, you do not want to use the automatic date mechanism of this template, uncomment the following lines and change accrodingly. 

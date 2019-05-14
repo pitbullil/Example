@@ -1,185 +1,79 @@
-\chapter{Introduction}
-This is a template for writing a thesis according to the Technion specifications. 
-Please, however, check with the graduate school website to see if any specifications have changed. 
-This template was written by Boaz Shuval (January 2019). 
+\chapter{Introduction}\label{chap:intro}
+% {First paragraph: problem definition + applications
+\begin{figure*}[b!]
+	\centering
+	\setlength\tabcolsep{3pt}
+	\begin{tabular}{ccc}
+		%	\rotatebox{90}{    \, FAUST} &
+		\includegraphics[width=0.1\textwidth]{figures/test_scan_031_test_scan_034_PFM.png}  &
+		\includegraphics[width=0.1333\textwidth]{figures/test_scan_034.png} &
+		\includegraphics[width=0.1333\textwidth]{figures/test_scan_031_test_scan_034.png}\\
+		\multicolumn{3}{c}{(a) large deformations}\\
+		%	 \rotatebox{90}{    \, SHREC'16A} &
+		\includegraphics[scale=0.5]{figures/dog_base.png}&
+		\includegraphics[scale=0.55]{figures/holes_dog_shape_25_PFM.png}&
+		\includegraphics[scale=0.55]{figures/holes_dog_shape_25.png}\\
+		\multicolumn{3}{c}{(b) partiality}\\
+		%	\rotatebox{90}{    \, SHREC'16B} &
+		\includegraphics[width=0.12\textwidth]{figures/Top1Base.png} &
+		\includegraphics[width=0.12\textwidth]{figures/Top1PFM.png} &
+		\includegraphics[width=0.12\textwidth]{figures/Top1DDIS.png} \\
+		\multicolumn{3}{c}{(b) topological noise}\\\\
+		Input & Rodola'17\cite{rodola2017partial} & Ours \\
+	\end{tabular}
+	\caption{{\textbf{Challenging correspondences.}}  
+		Corresponding vertices are colored similarly.
+		(a) While the corresponding arms are switched in~\cite{rodola2017partial}, our algorithm manages to match the arms correctly.
+		(b) When given a highly partial model of a dog as input, our algorithm manages to match its four dog's legs correctly.
+		(c) The right hand is well matched by our algorithm. 
+	}
+	\label{fig:teaser}
+\end{figure*}
 
-\section{Instructions}
+Shape correspondence is a fundamental problem in computer vision and computer graphics, both in 2D and in 3D.
+Numerous applications require robust correspondences, for instance in animation, reconstruction, and shape analysis~\cite{van2011survey}.
+The focus of this paper is on shape correspondence between meshes in 3D.
 
-This template is provided as is. Please check with the Technion graduate school website to see if the guidelines have changed, as they often do. For
-the latest directions from the graduate school, see: 
-\url{https://graduate.technion.ac.il/graduation/thesis-editing/}
-(This is the website address circa January 2019). 
 
-All files use UTF-8 encoding. Make sure your LaTeX system supports this encoding. 
 
-\subsection{Preparing the Thesis}
 
+Finding correspondences between shapes is highly challenging, even when the objects are rigid and full~\cite{Biasotti03,barequet1997partial,mellado2014super,Zeng_2017_CVPR}. 
+This paper, however, addresses the problem of shape correspondence, when the following additional challenges are added (see Figure~\ref{fig:teaser}):
+(1)~The objects may have gone through non-rigid deformations~\cite{dubrovina2010matching,lipman2009mobius,Maron:2016:PRV:2897824.2925913,solomon2016entropic,vestner2017product}; 
+(2)~only part of the shape is given and should be  matched to the correct region within the full shape ({\em partiality})~\cite{biasotti2006sub,itskovich2011surface,rodola2017partial,sahilliouglu2012minimum},  and
+(3)~non-adjacent parts of the surfaces intersect~\cite{chen2015robust,litany2017fully,vanKaick:2013:BMP:2771539.2771553,vestner2017efficient} ({\em topological noise}).
+All of the above frequently occur in real world scenarios.
+
+% second paragraph: related work in short
+Previous approaches have focused on minimization of some distortion criteria, of either point-wise shape descriptors~\cite{litany2017fully,rodola2017partial}, pair-wise shape descriptors~\cite{sahilliouglu2012minimum}, or the combination of both~\cite{vestner2017efficient}.
+Impressive result have been exhibited , yet some downfalls still exist.
+This is in particular evident in the three cases mentioned above, in particular when the  deformation is extreme, when partiality is severe, and in many cases of topological noise.
+
+Some recent approaches have utilized deep neural networks~\cite{boscaini2016learning,litany2017deep,Masci:2015:GCN:2919341.2920992,monti2017geometric}.
+These show a lot of promise on a couple of full-shape benchmarks. 
+In~\cite{boscaini2016learning} the results are analyzed also for a  partial correspondence benchmark; 
+we will show that our method outperforms their results.
+All these methods require a significant amount of labeled training data, which is currently difficult to acquire. 
+
+The algorithm proposed in this paper belongs to the first class of algorithms, which does not utilize deep learning.
+It proposes a novel similarity function, which analyzes the nearest neighbor field in vertex shape descriptor space.
+That is to say, for each vertex of a source mesh we find the nearest neighbor in the target mesh, in terms of a specific shape descriptor and a distance function.
+Rather than minimizing some function of distances, we analyze statistics of this field.
+The statistical nature of our method lets it ignore outliers, which are the source of unreliability in some other methods.
+Specifically, the statistics we are concerned about regard two aspects of the nearest neighbor field:
+(1) the diversity of the field, i.e. how many different matches the nearest neighbor field contains, and
+(2) preservation of pairwise distances of the matches in the nearest neighbor field.
+
+We have tested our method on the two challenging benchmarks of {\em SHREC'16}, the one that contains partial deformed shapes~\cite{cosmo2016shrec} and and the one that contains deformed shapes with topological noise~\cite{lahner2016shrec}.
+We exhibit the benefit of our method both qualitatively (Figure~\ref{fig:teaser}) and quantitatively.
+In particular, our method obtains a $10$-$20\%$ improvement over the state-of-the-art on the first dataset and is competitive on the second.
+In addition, we also show qualitative results on the FAUST dataset~\cite{bogo2014faust}.
+
+Hence, our contribution is twofold.
 \begin{enumerate}
-\item The main.tex file is the main file to be compiled. Place it (with the other thesis files) in the same directory as the \verb".cls" and \verb".sty"
-    files provided.                                                                                                                                          
-    \item  The main class is \verb"technionThesis.cls."
-   It has the the following options:  
-   \begin{itemize}
-       \item  hyperref       ---  Add hyperlinks
-       \item  publist        ---  Add a list of publications in the front pages (update list in thesissetup.sty)
-       \item  addack         ---  Add an acknowledgments page (only for final version!)
-       \item  advisement     ---  Use "advisement" instead of "supervision" in front pages (a pet peeve of mine)
-       \item  spacepar       ---  Add a blank line between paragraphs
-       \item  firstparindent ---  Indent the first paragraph of a chapter/section
-       \item  libertine      ---  Use a different selection of fonts, based on libertine, for the English part of the thesis. (See note 4)
-    \end{itemize}
-\item In the file \verb"technionThesisSetup.sty" you must input your details in the various commands. It is pretty self explanatory. 
-\item The class loads a number of packages that the class author (Boaz Shuval) uses regularly. It also sets up theorem-style environments.
-   If you know what you're doing, feel free to change things as you see fit. Otherwise, leave this alone. 
-   \begin{enumerate}
-       \item Environments are defined using amsthm. The following environments are available:
-           \begin{itemize}
-               \item Theorem-style: theorem, lemma, corollary, proposition, conjecture
-      (Heading in bold, text in italics)
-      These all share consecutive numbering, in the format (chapter.number)
-  \item Definition-style: definition, example, assumption, condition 
-      (Heading in bold, text upright)
-      These are numbered (chapter.number) with their own numbering. Assumption and condition have alphanumeric numbering (A,B,C, etc.)
-  \item Remark-style: remark, question, discussion
-      (Heading in italics, text upright)
-      These are numbered (chapter.number) with their own numbering. Discussion is unnumbered. 
-  \item Proof environments: proof, IEEEproof. Both have a black square at the proof end. 
-    \end{itemize}
-\item  Packages loaded (partial listing):
-    \begin{itemize}
-        \item mathtools (which loads amsmath)
-        \item amsthm, amssymb
-        \item IEEEtrantools (loads IEEEeqnarray, and also sets the bibliography style)
-        \item graphicx 
-        \item tikz (including various useful tikz libraries) 
-        \item cleveref (for referring to sections, etc, using \verb"\Cref", automagically adding the header)
-        \item stackrel
-        \item accents  (for adding symbols above symbols)
-        \item xspace (for adding a smart space after a macro command)
-        \item tabto  (add a tabstop for lining things up)
-        \item algorithm2e (ruled, vlined)
-        \item url
-        \item polyglossia (for Hebrew support)
-        \item longtable (for a table that runs over more than one page; useful for the abstract)
-        \item booktabs, multirow (for nicer tables)
-    \end{itemize}
-    \end{enumerate}
-\item Place all of your own commands in the file \verb"Example/technionThesisMacros.sty". That is, various \verb"\newcommand" and \verb"\DeclareMathOperator" are defined here. I've defined a few
-   useful ones for you to get started. 
-\item There are now \verb".tex" files for you to edit: 
-    \begin{itemize}
-        \item \verb"abstract.tex"         for your abstract in English (200-500 words)
-        \item \verb"habstract.tex"        for your abstract in Hebrew (500-2000 words)
-        \item \verb"acknowledgments.tex"  for your acknowledgments in English
-        \item \verb"hacknowledgments.tex" for your acknowledgments in Hebrew
-        \item \verb"introduction.tex"     for your introduction chapter
-        \item \verb"chapfirst.tex"        for your first chapter 
-        \item \verb"chapsecond.tex"       for your second chapter (add additional chapters as you see fit)
-        \item \verb"discussion.tex"       for your discussion/conclusions chapter
-        \item \verb"appendix.tex"         for your appendix (appendices must appear in their own chapters, and not as part of the main text). 
-   \end{itemize}
-   \end{enumerate}
-
-   \subsection{Compilation}
-Compile using xelatex. If you are using latexmk, you may include in the compilation directory a file called \verb".latexmkrc"
-with the following line: 
-
-\verb"$pdflatex = 'xelatex --shell-escape %O %S';"
-
-This tells latexmk to use xelatex for compilation, so you need not worry
-about this.
-You may also compile this on overleaf (again, use xelatex). 
-
-The Hebrew portion of the thesis is based on the polyglossia package. It uses the David CLM font for Hebrew. Thus, you must install the culmus fonts
-for this to work on your installation. 
-
-\subsection{ Be a pal}
-Please share this template with your friends and colleagues. 
-If you enjoyed using it, consider sending me a note to let me know. 
-If you find a bug, or have asuggestion for improvement, I'd love to know about it.
-
-\section{Files in this Template}
-
-\begin{itemize}
-    \item  \verb"technionThesis.cls"     ---  The class file
-    \item  \verb"technionThesisSetup.sty"        ---  Setup data fields
-    \item  \verb"README.md"                
-    \item  Inside the Example directory:
-        \begin{itemize}
-    \item  \verb"abbrev.tex"               
-    \item  \verb"abstract.tex"             
-    \item  \verb"acknowledgments.tex"
-    \item  \verb"appendix.tex"
-    \item  \verb"chapfirst.tex"
-    \item  \verb"chapsecond.tex"
-    \item  \verb"discussion.tex"
-    \item  \verb"habstract.tex"          ---  Hebrew abstract
-    \item  \verb"hacknowledgments.tex"   ---  Hebrew acknowledgments
-    \item  \verb"introduction.tex"
-    \item  \verb"main.tex"               ---  Main thesis file
-    \item  \verb"mybib.bib"
-    \item  \verb"technionThesisMacros.sty"           ---  Define your macros here
-\end{itemize}
-\end{itemize}
-
-\section{License}
-This template is licensed under Creative Commons CC BY 4.0. 
-
-\section{Notes}
-\begin{enumerate}
-    \item This template was tested on a mac running macOS 10.13, with TEXLIVE2017. It was also tested on overleaf in January 2019, which also runs TEXLIVE2017. 
-    \item There is a bug when using TEXLIVE2018, which manifests itself in the figure/table numbering. If you encounter this bug, use the memoir package from
-          TEXLIVE2017, instead. 
-    \item The template uses the Memoir package internally. The chapter heading design is a modified version of a design by Vincent Zoonekynd 
-        (it is modified from the BlueBox style in \url{https://ctan.org/pkg/memoirchapterstyles}).  
-       \item If using the libertine option, make sure to use the latest version of newtxmath, available from \url{https://ctan.org/pkg/newtx}
-   (download the file \verb"newtxmath.sty" to the home directory)
-   \end{enumerate}
-
-
-   \section{ Version History}
-31 January 2019:    Version 1.0
-
-
-
-
-\section{A Section} 
-The remainder of this file is a boilerplate example
-Equations are also fine: 
-\[ 
-    f(x) = x+2,
-\] 
-as are numbered equations:
-\begin{equation}\label{eq:numbered int}
-    g(y) = y.
-\end{equation}
-Of course, one may refer to a numbered equation such as~\eqref{eq:numbered int}. 
-
-\section{Second section}
-In this section we have a figure. 
-
-\begin{figure}[t]
-    \begin{center}
-\begin{tikzpicture}
-    \node[draw, minimum width = 5cm] {A rectangle};
-\end{tikzpicture}
-\end{center}
-\caption[Short caption]{A very long caption for this figure. It is deliberately very long to illustrate the usefulness of the short caption for the table of figures. }
-\label{fig:rectangle}
-\end{figure}
-\lipsum[10-13]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	\item
+	We introduce a new approach for finding correspondences between given meshes, which is robust to deformations, partiality and topological noise.
+	The novelty of our approach is relying on properties of the nearest-neighbor field.
+	\item
+	We demonstrate the benefits of our algorithm on the commonly-used benchmarks, both quantitatively and qualitatively.
+\end{enumerate}

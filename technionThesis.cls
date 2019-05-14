@@ -142,8 +142,8 @@
 
 
 % OPTION handling:
-\if@loadhyperref
-  \RequirePackage[colorlinks = true]{hyperref}
+%\if@loadhyperref
+  \RequirePackage[colorlinks = false]{hyperref}
 \fi
 
 
@@ -228,7 +228,7 @@
 \newcommand{\AdvisorEnglish}{Advisor Name}
 \newcommand{\AdvisorTitleEnglish}{Professor}
 \newcommand{\TitleEnglish}{Thesis Title}
-\newcommand{\DegreeEnglish}{Doctor of Philosophy} % OR: Master of Science
+\newcommand{\DegreeEnglish}{Master of Science in Electrical Engineering} % OR: Master of Science
 \newcommand{\MonthEnglish}{\engmonthname{\engmonth}}
 \newcommand{\YearEnglish}{\the\engyear}
 \newcommand{\JewishMonthEnglish}{\HebrewMonthNameInEnglishTechnion{\hebmonth}{\hebyear}}
@@ -240,7 +240,7 @@
 \newcommand{\AdvisorHebrew}{שם המנחה}
 \newcommand{\AdvisorTitleHebrew}{פרופסור}
 \newcommand{\TitleHebrew}{כותרת התיזה}
-\newcommand{\DegreeHebrew}{דוקטור לפילוסופיה} % OR: מגיסטר למדעים
+\newcommand{\DegreeHebrew}{מגיסטר למדעים בהנדסת חשמל} % OR: מגיסטר למדעים
 \newcommand{\MonthHebrew}{\engmonthnamehebrew{\engmonth}}
 \newcommand{\YearHebrew}{\the\engyear}
 \newcommand{\JewishMonthHebrew}{\HebrewMonthName{\hebmonth}{\hebyear}}
@@ -249,27 +249,11 @@
 \newcommand{\FinancialHebrew}{אני מודה לטכניון על התמיכה הכספית הנדיבה בהשתלמותי.}
 
 \newcommand{\PubListEnglish}{%
-    \begin{itemize}
-        \item Publication 1.  \\ 
-            \Cref{chap_first} is based on this paper.  
-        \item Publication 2.  \\ 
-            \Cref{chap_second} is based on this paper.  
-\end{itemize}}
+}
 
 \newcommand{\PubListHebrew}{%
 \begin{english}
-    \begin{itemize}
-        \item First publication.
-            \vspace{-1em}
-             \begin{flushright}
-                 \texthebrew{פרק \ref{chap_first} מבוסס על מאמר זה.} 
-            \end{flushright}
-        \item Second publication.
-            \vspace{-1em}
-             \begin{flushright}
-                 \texthebrew{פרק \ref{chap_second} מבוסס על מאמר זה.} 
-            \end{flushright}
-    \end{itemize}
+ 
 \end{english}}
 
 
@@ -364,7 +348,7 @@
 
                     \vspace{7\baselineskip}
 
-                    {\LARGE\itshape Research Thesis in Partial Fulfillment of the Requiremenets for the Degree of \DegreeEnglish}
+                    {\LARGE\itshape Final Paper in Partial Fulfillment of the Requiremenets for the Degree of \DegreeEnglish}
 
                     \vspace{7\baselineskip}
 
@@ -419,8 +403,8 @@
     \vfill                       
     \ifthenelse{\boolean{addpublist}}{%
     \section*{List of Publications}
-    Some of the results presented in this thesis have been published or submitted for publication. These are: 
-    \PubListEnglish{}
+    The results presented in this thesis have been tentatively   submitted for publication.: 
+    \PubListEnglish{"Partial Correspondence of 3D Shapes using Properties of the Nearest-Neighbor Field", Submitted and conditionally accepted to Shape Modeling International 2019}
     \vfill
 }{}
     \noindent \FinancialEnglish
@@ -443,7 +427,7 @@
 
 \tableofcontents* \cleardoublepage
 \listoffigures*   \cleardoublepage
-\listoftables*    \cleardoublepage
+%\listoftables*    \cleardoublepage
 
 \pagestyle{ruled}
 \mainmatter
@@ -467,7 +451,7 @@
                     
                     \vspace{7\baselineskip}
                     
-                    {\LARGE\itshape חיבור על מחקר לשם מילוי חלקי של הדרישות לקבלת התואר \DegreeHebrew}
+                    {\LARGE\itshape חיבור על עבודת גמר לשם מילוי חלקי של הדרישות לקבלת התואר \DegreeHebrew}
 
                     \vspace{7\baselineskip}
 
@@ -521,7 +505,9 @@
 \ifthenelse{\boolean{addpublist}}{%
 \section*{\hebrewfont רשימת פרסומים}
 חלק מהתוצאות המופיעות בחיבור זה פורסמו או הוגשו לפרסום, כדלקמן.  
-\PubListHebrew{}
+\PubListHebrew{”Partial Correspondence of 3D Shapes using Properties of the Nearest-Neighbor Field”,
+הוגש והתקבל על תנאי ל
+Shape Modeling International 2019}
 \vfill
 }
 {}

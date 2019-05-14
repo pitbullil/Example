@@ -1,0 +1,72 @@
+\chapter{Similarity between sub-surfaces}\label{sec:similarity}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% section: Similarity
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Problem definition
+This section elaborates on Step~3, which is the core of the algorithm.
+Given a pair of patches of the same scale, $Q \subset \mathcal{M}$ and $P \subset \mathcal{N}$, this section defines a similarity function between them. 
+We require that this function be oblivious to non-rigid deformations, to different resolutions of the meshes, to noise, to topological noise, and to partiality of the data.
+
+%Key idea
+We would like to reward a correspondence for which the {\em nearest-neighbor (NN)} field satisfies two properties: it has high diversity of the corresponding points, as well as low inconsistency of the distances.
+In what follows we explain these two properties.
+
+\paragraph{Diversity}
+When $Q$ and $P$ correspond, each point  on $Q$ should have a unique NN-match on $P$.
+Conversely, if $Q$ and $P$ do not correspond, most of the points on $Q$  do not have a good match on $P$.
+In the latter case, the nearest neighbors are likely to belong to a small set of points that happen to be somewhat similar to the points of $Q$.
+This implies that if the patches correspond, their NN-field is highly \textit{diverse}, i.e., pointing to many different points in $P$.
+
+An intuitive and efficient way to measure diversity is to count the number of unique nearest neighbors between the points of  $Q$ and $P$:
+\begin{equation}
+	\label{eq:diversity}
+	Div(Q,P)=|\{p_i\in P:\exists q_j\in Q,NN(q_j,P)=p_i\}|,
+\end{equation}
+where  $\{p_i\}_{i=1}^{|P|}$ and $\{q_j\}_{j=1}^{|Q|}$ are the set of points of $Q$ and $P$, respectively and the nearest neighbors is computed between the descriptors (FPFH) of the points.
+However, we will see below that the diversity can be calculated implicitly.
+
+\paragraph{Distance inconsistency}
+A relatively stable property of  deformed surfaces is their geodesic distances.
+Therefore, if two patches correspond, points that belong to a nearest neighbor pair tend to have similar geodesic distances to the centers of the patches they reside on.
+Conversely, arbitrary matches typically do not hold this relation.
+
+To realize this observation, we define $DistInconst(Q,P)$, the inconsistency of  $Q$ and $P$, as follows.
+Let $p \in P$ and $q \in Q$ be the centers of $P$ and $Q$, respectively;
+furthermore, let $p_i= NN(q_j,P)$ be the nearest-neighbor of  $q_j \in Q$.
+The deformation implied by the NN-Field for ${p_i,q_j}$ is defined by:
+\begin{eqnarray}
+	\label{eq:Def}
+	&&DistInconst(q_j,p_i,Q,P)= \\
+	&&|{GeodDist(q_j,q)-GeodDist(p_i,p)}|/\epsilon, \nonumber
+\end{eqnarray}
+where $0<\epsilon << Area(\mathcal{M})$ is a used for numerical stability.
+We note that diversity was defined between patches, whereas inconsistency was defined between points; this will be clarified later, when we show how to use these ideas within our general similarity function.
+
+
+\paragraph{Similarity function}
+Next, we should integrate the above considerations within a similarity definition, such that similar surfaces will have high diversity and small distance inconsistency.
+%
+For each $p_i \in P$, we find the minimal inconsistency 
+$$r_i^*=min_{q_j \in Q}DistInconst(q_j,p_i,Q,P),$$
+such that $p_i$ is the nearest neighbor of $q_j$ in the descriptor (FPFH) space.
+Note that some points in $P$ might not be associated with any point in $Q$, since they are not nearest neighbors of any point $q_j\in Q$;
+in this case we set $r_i^*=\infty$, in order to make the contribution of $p_i$ be zero.
+
+Finally, we define the similarity between patches $p$ and $Q$ as:
+\begin{equation}
+	Similarity(P,Q)=\sum_{p_i\in P}\frac{1}{1+r_i^*}.
+	\label{eq:DDIS}
+\end{equation}
+%
+It is easy to see that this function rewards low inconsistency.
+However, why does it also reward high diversity of the NN-Field?
+To understand this, consider the special case where $r_i^*\in\{0,\infty\}$.
+When this occurs, the value of Equation~\ref{eq:DDIS} is either $1$ (if $r_i*=0$) or $0$ (if $r_i*=\infty$).  
+In the former case, this indicates that a point $p_i$ has a point in $Q$ that considers $p_i$ to be its nearest neighbor.
+In this scenario, the similarity function simply counts the number of points in $P$ that are nearest neighbors of some point in $Q$.
+But, this is precisely the diversity function we seek-after.
+
+In the general case, the contribution of every point is inversely weighted by its inconsistency $r_i^*$.
+This gives preference to NN Fields that preserve pair-wise distances.
